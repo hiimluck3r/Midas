@@ -1,0 +1,26 @@
+name: frontend-check
+run-name: Check frontend PR basic stability
+on:
+  push: #delete this after tests
+    branches: ["frontend"]
+  pull_request:
+    types: [opened, reopened]
+    branches: ["main"]
+jobs:
+  test:
+    if: startsWith(github.head_ref, 'refs/heads/frontend')
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.4.0, 14, 16]
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: frontend
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: npm install
+      run: npm ci
+    - name: Test
+      run: npm dev
