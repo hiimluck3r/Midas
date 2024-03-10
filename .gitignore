@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
+Midas
+src/Midas
 
 # Editor directories and files
 .vscode/*
