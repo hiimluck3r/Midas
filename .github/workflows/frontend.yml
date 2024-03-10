@@ -1,0 +1,49 @@
+name: frontend-action
+run-name: Check frontend PR basic stability
+on:
+  push: #delete this after tests
+    branches: ["frontend"]
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: ["main"]
+jobs:
+  build_test:
+    if: contains(github.ref, 'frontend')
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20]
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: frontend
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: npm install
+      run: npm i
+    - name: install dependencies
+      run: npm install @emotion/react @emotion/styled
+    - name: build
+      run: npm run build
+  
+  ctr_build:
+    needs: ["build_test"]
+    if: contains(github.ref, 'frontend')
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: frontend
+    - name: Build the Docker image
+      run: docker build . --tag midas:test
+    - name: Test the Docker image
+      run: |
+        docker run midas:test -d
+        sleep 3
+    - name: Get HTTP response from "localhost:8080"
+      run: "curl -f localhost:8080"
+    
+      
