@@ -8,7 +8,7 @@ on:
     branches: ["main"]
 jobs:
   test:
-    if: contains(GITHUB_REF, 'frontend')
+    if: contains(github.ref, 'frontend')
     runs-on: ubuntu-latest
     strategy:
       matrix:
