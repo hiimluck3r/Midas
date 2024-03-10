@@ -1,0 +1,42 @@
+name: frontend-package-push-action
+run-name: Create new Midas frontend package
+on:
+  push:
+    branches: ["main"]
+  release:
+    types: ["published"]
+
+jobs:
+  ctr_check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: docker build . --tag midas:latest
+    - name: Test the Docker image
+      run: |
+        docker run -d -p 8080:8080 midas:test
+        sleep 3
+    - name: Get HTTP response from "localhost:8080"
+      run: "curl -f localhost:8080"
+  
+  ctr_push:
+    needs: ["ctr_check"]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build and publish an image for ${{ github.repository }}
+      uses: macbre/push-to-ghcr@v13
+      with:
+        image_name: ${{ github.repository }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+
+  telegram_notify:
+    needs: ["ctr_push"]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        message: ["New package has been pushed to Midas repository"]
+    steps:
+      - name: Notify owner in Telegram
+        run: 'curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage -d chat_id=${{ secrets.TELEGRAM_ID }} -d text="${{ matrix.message }}" > /dev/null'

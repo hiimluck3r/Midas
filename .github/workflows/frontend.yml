@@ -4,6 +4,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     branches: ["main"]
+
 jobs:
   build_test:
     if: github.head_ref == 'frontend'
