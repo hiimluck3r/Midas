@@ -16,7 +16,7 @@ const database = client.db('Avito');
 
 //Connect to db and start a server
 client.connect().then(()=>{
-  console.log('Db connected');
+  console.log('DB connected');
   app.listen(4000, ()=>{
     console.log('Listening');
   })
