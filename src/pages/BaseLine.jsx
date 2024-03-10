@@ -247,8 +247,7 @@ function BaseLine() {
                         <IconButton
                             aria-label="remove"
                             onClick={() => handleRemoveItem(item.name)}
-                            style={{ marginTop: '-3px' }}
-                        >
+                            style={{ marginTop: '-3px' }}>
                             <Remove />
                         </IconButton>
                     </Typography>
@@ -283,7 +282,6 @@ function BaseLine() {
                     ))}
                 </div>
             ))}
-
 
             <Button
                 variant="contained"
