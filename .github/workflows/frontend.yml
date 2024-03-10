@@ -7,7 +7,7 @@ on:
 
 jobs:
   build_test:
-    if: github.head_ref == 'frontend'
+    if: github.head_ref == 'frontend' || github.head_ref == 'backend'
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -15,7 +15,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        ref: frontend
+        ref: ${{ github.head_ref }}
+    - name: Enter client directory
+      run: cd client
     - uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
@@ -32,7 +34,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        ref: frontend
+        ref: ${{ github.head_ref }}
+    - name: Enter client directory
+      run: cd client
     - name: Build the Docker image
       run: docker build . --tag midas:test
     - name: Test the Docker image
@@ -47,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        message: ["Pending Midas/frontend pull request from ${{ github.event.pull_request.user.login }}"]
+        message: ["Pending Midas repository pull request from ${{ github.event.pull_request.user.login }}"]
     steps:
       - name: Notify owner in Telegram
         run: 'curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage -d chat_id=${{ secrets.TELEGRAM_ID }} -d text="${{ matrix.message }}" > /dev/null'

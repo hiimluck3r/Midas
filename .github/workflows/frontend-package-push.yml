@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+    - name: Enter client directory
+      run: cd client
     - name: Build the Docker image
       run: docker build . --tag midas:test
     - name: Test the Docker image
@@ -25,6 +27,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+    - name: Enter client directory
+      run: cd client
     - name: Build and publish an image for ${{ github.repository }}
       uses: macbre/push-to-ghcr@v13
       with:
