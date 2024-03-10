@@ -4,11 +4,9 @@ on:
   push: #delete this after tests
   #pull_request:
     #types: [opened, reopened]
-  branches: #change to job's definition
-    - 'frontend'
 jobs:
-  #run_if:
-    #if: startsWith(github.head_ref, 'frontend')
+  run_if:
+    if: startsWith(github.head_ref, 'frontend')
   test:
     runs-on: ubuntu-latest
     strategy:
