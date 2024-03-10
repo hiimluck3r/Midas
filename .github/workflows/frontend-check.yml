@@ -8,11 +8,15 @@ on:
     branches: ["main"]
 jobs:
   test:
-    if: startsWith(github.head_ref, 'refs/heads/frontend')
+    if: contains(github.ref, 'frontend')
     runs-on: ubuntu-latest
     strategy:
       matrix:
+<<<<<<< HEAD
         node-version: [16.2.0, 14, 16]
+=======
+        node-version: [16.x, 18.x]
+>>>>>>> 7311579c740153b091a2d342c447ad8f58685634
     steps:
     - uses: actions/checkout@v4
       with:
@@ -21,6 +25,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: npm install
-      run: npm ci
+      run: npm i
+    - name: install dependencies
+      run: npm install @emotion/react @emotion/styled
+    - run: npm run build --if-present
     - name: Test
-      run: npm dev
+      run: npm test
