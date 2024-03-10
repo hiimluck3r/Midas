@@ -2,8 +2,10 @@ name: frontend-check
 run-name: Check frontend PR basic stability
 on:
   push: #delete this after tests
-  #pull_request:
-    #types: [opened, reopened]
+    branches: ["frontend"]
+  pull_request:
+    types: [opened, reopened]
+    branches: ["main"]
 jobs:
   test:
     if: startsWith(github.head_ref, 'frontend')
