@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [10.4.0, 14.x, 16.x]
+        node-version: [14.x, 16.x]
     steps:
     - uses: actions/checkout@v4
       with:
@@ -25,4 +25,4 @@ jobs:
     - name: install dependencies
       run: npm install @emotion/react @emotion/styled
     - name: Test
-      run: npm run dev
+      run: npm run dev -- --host
