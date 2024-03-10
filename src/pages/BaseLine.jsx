@@ -12,7 +12,34 @@ function BaseLine() {
         { id: 6, microcategory_id: 6, location_id: 6, name: 'BaseLine 104', price: 1300 },
         { id: 7, microcategory_id: 7, location_id: 7, name: 'BaseLine 200', price: 1100 },
         { id: 8, microcategory_id: 8, location_id: 8, name: 'BaseLine 5', price: 1030 },
+        { id: 9, microcategory_id: 8, location_id: 8, name: 'BaseLine 6', price: 1200 },
+        { id: 10, microcategory_id: 8, location_id: 8, name: 'BaseLine 7', price: 1500 },
+        { id: 11, microcategory_id: 7, location_id: 6, name: 'BaseLine 8', price: 900 },
+        { id: 12, microcategory_id: 7, location_id: 7, name: 'BaseLine 9', price: 800 },
+        { id: 13, microcategory_id: 6, location_id: 5, name: 'BaseLine 10', price: 700 },
     ];
+
+    const location = [
+        { id: 1, name: 'Архангельск' },
+        { id: 2, name: 'Москва' },
+        { id: 3, name: 'Липецк' },
+        { id: 4, name: 'Владивосток' },
+        { id: 5, name: 'Краснодар' },
+        { id: 6, name: 'Ижевск' },
+        { id: 7, name: 'Перьмь' },
+        { id: 8, name: 'Сургут' }
+    ];
+
+    const category = [
+        { id: 1, name: 'Телефоны' },
+        { id: 2, name: 'Автомобили' },
+        { id: 3, name: 'Услуги' },
+        { id: 4, name: 'Компьютеры' },
+        { id: 5, name: 'Кухонная техника' },
+        { id: 6, name: 'Игрушки' },
+        { id: 7, name: 'Мебель' }
+    ];
+
 
     const [names, setNames] = useState(initialNames);
     const [searchTerm, setSearchTerm] = useState('');
@@ -20,6 +47,16 @@ function BaseLine() {
     const [selectedItems, setSelectedItems] = useState({});
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
     const [selectedItemToUpdate, setSelectedItemToUpdate] = useState(null);
+
+    const getLocationName = (locationId) => {
+        const foundLocation = location.find(loc => loc.id === locationId);
+        return foundLocation ? foundLocation.name : 'Неизвестно';
+    };
+
+    const getCategoryName = (categoryId) => {
+        const foundCategory = category.find(cat => cat.id === categoryId);
+        return foundCategory ? foundCategory.name : 'Неизвестно';
+    };
 
     const handleSearch = (event) => {
         const term = event.target.value;
@@ -109,18 +146,18 @@ function BaseLine() {
             <List>
                 {Object.values(selectedItems).map((item, index) => (
                     <ListItem key={index}>
-                        <ListItemText primary={item.name} />
+                        <ListItemText primary={item.name} secondary={`Локация: ${getLocationName(item.location_id)}, Категория: ${getCategoryName(item.microcategory_id)}`} />
                         <TextField
                             label="Цена"
                             variant="outlined"
                             value={item.price || ''}
                             onChange={(event) => handlePriceChange(item.name, event)}
                             type="number"
-                            style={{ marginLeft: '1rem' }}
                         />
                     </ListItem>
                 ))}
             </List>
+
             <Button
                 variant="contained"
                 color="primary"
@@ -147,12 +184,13 @@ function BaseLine() {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={closeConfirmModal} color="primary">
-                        Отмена
-                    </Button>
                     <Button onClick={handleUpdatePrice} color="primary" autoFocus>
                         Да, изменить цену
                     </Button>
+                    <Button onClick={closeConfirmModal} color="primary">
+                        Отмена
+                    </Button>
+
                 </DialogActions>
             </Dialog>
         </div>
