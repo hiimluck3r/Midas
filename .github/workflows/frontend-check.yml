@@ -8,11 +8,11 @@ on:
     branches: ["main"]
 jobs:
   test:
-    if: startsWith(github.head_ref, 'refs/heads/frontend')
+    if: contains(GITHUB_REF, 'frontend')
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [10.4.0, 14, 16]
+        node-version: [10.4.0, 14.x, 16.x]
     steps:
     - uses: actions/checkout@v4
       with:
