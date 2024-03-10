@@ -39,7 +39,7 @@ jobs:
       run: docker build . --tag midas:test
     - name: Test the Docker image
       run: |
-        docker run -d midas:test
+        docker run -d -p 8080:8080 midas:test
         sleep 3
     - name: Get HTTP response from "localhost:8080"
       run: "curl -f localhost:8080"

@@ -14,6 +14,7 @@ WORKDIR /app/midas
 
 COPY package.json .
 COPY vite.config.js .
+RUN npm install && npm install @emotion/react @emotion/styled
 COPY --from=BUILD_IMAGE /app/midas/dist/ /app/midas/dist/
 
 EXPOSE 8080
