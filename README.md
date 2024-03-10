@@ -9,3 +9,5 @@ Currently, two official plugins are available:
 
 
 To start a project, you need to register an "npm run dev"
+Node Version: 10.4.0
+To install dependencies, the command in the terminal is "npm install" or "npm i"
