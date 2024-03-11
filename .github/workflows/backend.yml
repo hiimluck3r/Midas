@@ -12,7 +12,7 @@ jobs:
       matrix:
         username: ["test"]
         password: ["test"]
-        URI: ["mongodb://${{ matrix.username }}:${{ matrix.password }}@localhost:27017", "${{ secrets.AtlasURI }}"]
+        #URI: ["mongodb://${{ matrix.username }}:${{ matrix.password }}@localhost:27017", "${{ secrets.AtlasURI }}"] - Not supported, leave for quick select
     steps:
     - uses: actions/checkout@v4
       with:
@@ -30,7 +30,7 @@ jobs:
       working-directory: ./backend
     - name: Test the Docker image
       run: |
-        docker run -e MONGO_URI="$URI" -d -p 4000:4000 --name backend midas_backend:test
+        docker run -e MONGO_URI="${{ secrets.AtlasURI }}" -d -p 4000:4000 --name backend midas_backend:test
         sleep 3
         echo $(docker ps)
         docker logs backend
