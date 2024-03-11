@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: Build the Docker image
       run: docker build . --tag midas:test
-      working-directory: ./frontend
+      working-directory: ./client
     - name: Test the Docker image
       run: |
         docker run -d -p 8080:8080 midas:test
@@ -32,7 +32,8 @@ jobs:
       with:
         image_name: ${{ github.repository }}
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        dockerfile: ./frontend/Dockerfile
+        context: ./client/
+        dockerfile: ./client/Dockerfile
 
   telegram_notify:
     needs: ["ctr_push"]

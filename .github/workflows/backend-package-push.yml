@@ -1,5 +1,5 @@
 name: backend-package-push-action
-run-name: Create new Midas backend package
+run-name: Create new Midas backend packages
 on:
   push:
     branches: ["main"]
@@ -41,6 +41,7 @@ jobs:
       with:
         image_name: ${{ github.repository }}-backend
         github_token: ${{ secrets.GITHUB_TOKEN }}
+        context: ./backend/
         dockerfile: ./backend/Dockerfile
     
     - name: Build and publish an image for ${{ github.repository }}-mongo
@@ -48,6 +49,7 @@ jobs:
       with:
         image_name: ${{ github.repository }}-mongo
         github_token: ${{ secrets.GITHUB_TOKEN }}
+        context: ./mongo/
         dockerfile: ./mongo/Dockerfile
 
   telegram_notify:
