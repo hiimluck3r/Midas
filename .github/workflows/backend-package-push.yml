@@ -1,0 +1,63 @@
+name: backend-package-push-action
+run-name: Create new Midas backend packages
+on:
+  push:
+    branches: ["main"]
+  release:
+    types: ["published"]
+
+jobs:
+  ctr_build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref }}
+
+    - name: Build the mongodb Docker image
+      run: docker build . --tag midas_mongo:test
+      working-directory: ./mongo
+
+    - name: Build the Docker image
+      run: docker build . --tag midas_backend:test
+      working-directory: ./backend
+
+    - name: Test images via docker-compose
+      run: |
+        docker-compose up -d
+        sleep 10
+      working-directory: ./backend
+    - name: Get HTTP response from "localhost:4000/api/admin/"
+      run: "curl -f localhost:4000/api/admin/"
+  
+  ctr_push:
+    needs: ["ctr_build"]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Build and publish an image for ${{ github.repository }}-backend
+      uses: macbre/push-to-ghcr@v13
+      with:
+        image_name: ${{ github.repository }}-backend
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        context: ./backend/
+        dockerfile: ./backend/Dockerfile
+    
+    - name: Build and publish an image for ${{ github.repository }}-mongo
+      uses: macbre/push-to-ghcr@v13
+      with:
+        image_name: ${{ github.repository }}-mongo
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        context: ./mongo/
+        dockerfile: ./mongo/Dockerfile
+
+  telegram_notify:
+    needs: ["ctr_push"]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        message: ["New backend and mongo packages have been pushed to Midas repository"]
+    steps:
+      - name: Notify owner in Telegram
+        run: 'curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage -d chat_id=${{ secrets.TELEGRAM_ID }} -d text="${{ matrix.message }}" > /dev/null'
