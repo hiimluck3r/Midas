@@ -51,7 +51,11 @@ jobs:
       run: docker build . --tag midas_backend:test
     - name: Test the Docker image
       run: |
+<<<<<<< HEAD
         docker run -d -p 4000:4000 -e MONGO_URI="mongodb://{{ matrix.username }}:{{ matrix.password }}@localhost:27017" midas_backend:test
+=======
+        docker run -d -p 4000:4000 -e URI="mongodb://{{ matrix.username }}:{{ matrix.password }}@localhost:27017" midas_backend:test
+>>>>>>> ede131cb5bde26af426e36c3865cc3352343464c
         sleep 3
     - name: Get HTTP response from "localhost:4000"
       run: "curl -f localhost:4000"
