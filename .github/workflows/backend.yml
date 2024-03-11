@@ -31,7 +31,7 @@ jobs:
       run: |
         docker run -e MONGO_URI="mongodb://{{ matrix.username }}:{{ matrix.password }}@localhost:27017" -d -p 4000:4000 --name backend midas_backend:test
         sleep 3
-        echo docker ps
+        echo $(docker ps)
         docker logs backend
       working-directory: ./backend
     - name: Get HTTP response from "localhost:4000/api/admin/"
