@@ -25,6 +25,7 @@ const app = express();
 dbPromise.then(
   app.listen(4000,()=>{
     console.log('Listening');
+    console.log(process.env.MONGO_URI);
   })
 )
 
