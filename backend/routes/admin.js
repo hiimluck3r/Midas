@@ -11,10 +11,10 @@ const {getAllMatrix, getMatrix, copyAndChange} = require('../controllers/adminCo
 router.get('/', getAllMatrix);
 
 //Get content of a single matrix
-router.get('/:id', getMatrix);
+router.get('/:id/:page', getMatrix);
 
 //Copy matrix and change it
-router.post('/:id', copyAndChange);
+router.post('/', copyAndChange);
 
 
 
