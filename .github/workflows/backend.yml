@@ -21,7 +21,7 @@ jobs:
       run: docker build . --tag midas_mongo:test
       working-directory: ./mongo
     - name: Run mongodb
-      run: docker run -e MONGO_INITDB_ROOT_USERNAME={{ matrix.username }} -e MONGO_INITDB_ROOT_PASSWORD={{ matrix.password }} -d -p 27017:27017 --name mongo midas_mongo:test
+      run: docker run -e MONGO_INITDB_ROOT_USERNAME="{{ matrix.username }}" -e MONGO_INITDB_ROOT_PASSWORD="{{ matrix.password }}" -d -p 27017:27017 --name mongo midas_mongo:test
       working-directory: ./mongo
 
     - name: Build the Docker image
