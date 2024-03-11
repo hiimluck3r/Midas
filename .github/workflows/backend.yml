@@ -20,9 +20,9 @@ jobs:
     - name: Build the Docker image
       run: docker build . --tag midas_backend:test
       working-directory: ./backend
-      
+
     - name: Test images via docker-compose
-      run: docker-compose up
+      run: docker-compose up -d
       working-directory: ./backend
     - name: Get HTTP response from "localhost:4000/api/admin/"
       run: "curl -f localhost:4000/api/admin/"
