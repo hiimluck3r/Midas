@@ -16,19 +16,13 @@ jobs:
     - name: Build the mongodb Docker image
       run: docker build . --tag midas_mongo:test
       working-directory: ./mongo
-    - name: Run mongodb
-      run: docker run -e MONGO_INITDB_ROOT_USERNAME="test" -e MONGO_INITDB_ROOT_PASSWORD="test" -d -p 27017:27017 --name mongo midas_mongo:test
-      working-directory: ./mongo
 
     - name: Build the Docker image
       run: docker build . --tag midas_backend:test
       working-directory: ./backend
-    - name: Test the Docker image
-      run: |
-        docker run -e MONGO_URI="mongodb://test:test@localhost:27017/" -d -p 4000:4000 --name backend midas_backend:test
-        sleep 3
-        echo $(docker ps)
-        docker logs backend
+      
+    - name: Test images via docker-compose
+      run: docker-compose up
       working-directory: ./backend
     - name: Get HTTP response from "localhost:4000/api/admin/"
       run: "curl -f localhost:4000/api/admin/"
