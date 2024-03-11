@@ -1,6 +1,6 @@
 const { UUID, ObjectId } = require('mongodb');
 const dbPromise = require('../mongoConnection.js');
-
+var storage = {};
 const getAllMatrix = async (req, res)=>{
   const names =[]; //array of matrixNames
   const db = await dbPromise; // get db
@@ -70,10 +70,20 @@ const copyAndChange = async (req,res)=>{
       })
     });
   }
-
+}
+//Create storage
+const createStorage = (req, res)=>{
+  const {baseline, discount} = req.body;
+  storage = {
+    baseline, 
+    discount
+  };
+  return res.status(200).json(storage);
 }
 module.exports = {
   getAllMatrix,
   getMatrix,
-  copyAndChange
+  copyAndChange,
+  createStorage,
+  storage
 }
