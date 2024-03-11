@@ -16,15 +16,15 @@ jobs:
     - uses: actions/checkout@v4
       with:
         ref: ${{ github.head_ref }}
-    - name: Enter backend directory
-      run: cd backend
     - uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
     - name: npm install
       run: npm i
+      working-directory: ./backend
     - name: build
       run: npm run build
+      working-directory: ./backend
   
   ctr_build:
     needs: ["build_test"]
@@ -38,21 +38,21 @@ jobs:
       with:
         ref: ${{ github.head_ref }}
 
-    - name: Enter mongo directory
-      run: cd mongo
     - name: Build the mongodb Docker image
       run: docker build . --tag midas_mongo:test
+      working-directory: ./mongo
     - name: Run mongodb
       run: docker run -d -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME={{ matrix.username }} -e MONGO_INITDB_ROOT_PASSWORD={{ matrix.password }} midas_mongo:test
+      working-directory: ./mongo
 
-    - name: Enter backend directory
-      run: cd ../backend
     - name: Build the Docker image
       run: docker build . --tag midas_backend:test
+      working-directory: ./backend
     - name: Test the Docker image
       run: |
         docker run -d -p 4000:4000 -e MONGO_URI="mongodb://{{ matrix.username }}:{{ matrix.password }}@localhost:27017" midas_backend:test
         sleep 3
+      working-directory: ./backend
     - name: Get HTTP response from "localhost:4000"
       run: "curl -f localhost:4000"
     
