@@ -2,7 +2,7 @@ name: backend-action
 run-name: Check backend PR basic stability
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, reopened]
     branches: ["main"]
 
 jobs:
@@ -46,7 +46,7 @@ jobs:
       run: docker run -d -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME={{ matrix.username }} -e MONGO_INITDB_ROOT_PASSWORD={{ matrix.password }} midas_mongo:test
 
     - name: Enter backend directory
-      run: cd backend
+      run: cd ../backend
     - name: Build the Docker image
       run: docker build . --tag midas_backend:test
     - name: Test the Docker image

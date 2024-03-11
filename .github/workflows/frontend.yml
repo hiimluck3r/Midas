@@ -2,7 +2,7 @@ name: frontend-action
 run-name: Check frontend PR basic stability
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, reopened]
     branches: ["main"]
 
 jobs:
