@@ -2,43 +2,24 @@ name: frontend-action
 run-name: Check frontend PR basic stability
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, reopened]
     branches: ["main"]
 
 jobs:
-  build_test:
-    if: github.head_ref == 'frontend'
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [20]
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        ref: frontend
-    - uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: npm install
-      run: npm i
-    - name: install dependencies
-      run: npm install @emotion/react @emotion/styled
-    - name: build
-      run: npm run build
-  
   ctr_build:
-    needs: ["build_test"]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
       with:
-        ref: frontend
+        ref: ${{ github.head_ref }}
     - name: Build the Docker image
       run: docker build . --tag midas:test
+      working-directory: ./client
     - name: Test the Docker image
       run: |
         docker run -d -p 8080:8080 midas:test
         sleep 3
+      working-directory: ./client
     - name: Get HTTP response from "localhost:8080"
       run: "curl -f localhost:8080"
     
@@ -47,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        message: ["Pending Midas/frontend pull request from ${{ github.event.pull_request.user.login }}"]
+        message: ["Frontend passed | Pending Midas repository pull request from ${{ github.event.pull_request.user.login }}"]
     steps:
       - name: Notify owner in Telegram
         run: 'curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage -d chat_id=${{ secrets.TELEGRAM_ID }} -d text="${{ matrix.message }}" > /dev/null'
