@@ -4,7 +4,7 @@ const connectToMongo = async ()=>{
   const client = new MongoClient(process.env.MONGO_URI);
   try{
     await client.connect();
-    console.log('Db connected');
+    console.log('DB connected');
     const db = client.db('Avito');
     return db
   } catch(err){
