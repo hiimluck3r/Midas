@@ -7,14 +7,13 @@ on:
     types: ["published"]
 
 jobs:
-  ctr_check:
+  ctr_build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Enter client directory
-      run: cd client
     - name: Build the Docker image
       run: docker build . --tag midas:test
+      working-directory: ./frontend
     - name: Test the Docker image
       run: |
         docker run -d -p 8080:8080 midas:test
@@ -23,17 +22,17 @@ jobs:
       run: "curl -f localhost:8080"
   
   ctr_push:
-    needs: ["ctr_check"]
+    needs: ["ctr_build"]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Enter client directory
-      run: cd client
-    - name: Build and publish an image for ${{ github.repository }}
+
+    - name: Build and publish an image for ${{ github.repository }}-frontend
       uses: macbre/push-to-ghcr@v13
       with:
         image_name: ${{ github.repository }}
         github_token: ${{ secrets.GITHUB_TOKEN }}
+        dockerfile: ./frontend/Dockerfile
 
   telegram_notify:
     needs: ["ctr_push"]
