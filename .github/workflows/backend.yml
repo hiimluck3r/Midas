@@ -30,7 +30,7 @@ jobs:
     - name: Test the Docker image
       run: |
         docker run -e MONGO_URI="mongodb://{{ matrix.username }}:{{ matrix.password }}@localhost:27017" -d -p 4000:4000 --name backend midas_backend:test
-        sleep 3
+        sleep 12
         echo $(docker ps)
         docker logs backend
       working-directory: ./backend
