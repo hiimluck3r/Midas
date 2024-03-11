@@ -41,14 +41,14 @@ jobs:
       with:
         image_name: ${{ github.repository }}-backend
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        context: ./backend
+        context: ./backend/
     
     - name: Build and publish an image for ${{ github.repository }}-mongo
       uses: macbre/push-to-ghcr@v13
       with:
         image_name: ${{ github.repository }}-mongo
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        context: ./mongo
+        context: ./mongo/
 
   telegram_notify:
     needs: ["ctr_push"]
