@@ -22,7 +22,9 @@ jobs:
       working-directory: ./backend
 
     - name: Test images via docker-compose
-      run: docker-compose up -d
+      run: |
+        docker-compose up -d
+        sleep 10
       working-directory: ./backend
     - name: Get HTTP response from "localhost:4000/api/admin/"
       run: "curl -f localhost:4000/api/admin/"
