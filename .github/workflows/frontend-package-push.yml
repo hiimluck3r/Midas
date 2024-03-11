@@ -33,6 +33,7 @@ jobs:
         image_name: ${{ github.repository }}
         github_token: ${{ secrets.GITHUB_TOKEN }}
         context: ./client/
+        dockerfile: ./client/Dockerfile
 
   telegram_notify:
     needs: ["ctr_push"]
