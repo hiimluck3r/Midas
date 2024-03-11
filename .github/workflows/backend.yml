@@ -8,10 +8,6 @@ on:
 jobs:
   ctr_build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        username: ["test"]
-        password: ["test"]
     steps:
     - uses: actions/checkout@v4
       with:
@@ -21,10 +17,7 @@ jobs:
       run: docker build . --tag midas_mongo:test
       working-directory: ./mongo
     - name: Run mongodb
-      run: |
-        docker run -e MONGO_INITDB_ROOT_USERNAME="${{ matrix.username }}" -e MONGO_INITDB_ROOT_PASSWORD="${{ matrix.password }}" -d -p 27017:27017 --name mongo midas_mongo:test
-        sleep 2
-        echo $(docker exec mongo "ls /data/db/")
+      run: docker run -e MONGO_INITDB_ROOT_USERNAME="test" -e MONGO_INITDB_ROOT_PASSWORD="test" -d -p 27017:27017 --name mongo midas_mongo:test
       working-directory: ./mongo
 
     - name: Build the Docker image
@@ -32,7 +25,7 @@ jobs:
       working-directory: ./backend
     - name: Test the Docker image
       run: |
-        docker run -e MONGO_URI="mongodb://${{ matrix.username }}:${{ matrix.password }}@localhost:27017/Avito" -d -p 4000:4000 --name backend midas_backend:test
+        docker run -e MONGO_URI="mongodb://test:test@localhost:27017/" -d -p 4000:4000 --name backend midas_backend:test
         sleep 3
         echo $(docker ps)
         docker logs backend
