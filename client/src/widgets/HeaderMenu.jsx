@@ -8,7 +8,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 export default function HeaderMenu() {
     return (
-        <AppBar position="static">
+        <AppBar position="static" sx={{ backgroundColor: '#ffaa01' }}>
             <Toolbar>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1, textAlign: "left" }}>
                     Admin panel
@@ -22,7 +22,6 @@ export default function HeaderMenu() {
                 >
                     <MenuIcon />
                 </IconButton>
-
             </Toolbar>
         </AppBar>
     );
