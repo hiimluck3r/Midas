@@ -1,0 +1,24 @@
+{{- if .Values.httproute.enabled -}}
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ include "midas.fullname" . }}
+  {{- with .Values.httproute.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  parentRefs:
+  - name: {{ .Values.httproute.spec.parentRefs }}
+  hostnames:
+  - '{{ .Values.httproute.host }}'
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: {{ include "midas.fullname" . }}
+      kind: Service
+      port: {{ .Values.service.port }}
+{{- end }}
