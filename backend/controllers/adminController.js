@@ -1,6 +1,6 @@
 const { UUID, ObjectId } = require('mongodb');
 const dbPromise = require('../mongoConnection.js');
-
+var storage;
 const getAllMatrix = async (req, res)=>{
   const names =[]; //array of matrixNames
   const db = await dbPromise; // get db
@@ -40,9 +40,9 @@ const copyAndChange = async (req,res)=>{
   const coll = await db.collection(targetCollection.name); // get actual coll
 
   if(targetCollection.name.includes('baseline')){ // check if baseline
-    const randomString = (Math.random() + 1).toString(36).substring(7); //create random string
-    await db.createCollection('baselineMatrix_'+randomString) //create new coll
-    const copy = db.collection('baselineMatrix_'+randomString); //get this new coll
+    const randomString = new Date() //create random string
+    await db.createCollection('baselineMatrix_'+randomString.toISOString()) //create new coll
+    const copy = db.collection('baselineMatrix_'+randomString.toISOString()); //get this new coll
     coll.find({}).toArray().then(documents=>{
       copy.insertMany(documents).then(()=>{ // copy all documents
         arr_obj.map(async (el)=>{ // change documents
@@ -56,9 +56,10 @@ const copyAndChange = async (req,res)=>{
   }
   //same code for discount
   if(targetCollection.name.includes('discount')){
-    const randomString = (Math.random() + 1).toString(36).substring(7);
-    await db.createCollection('discountMatrix_'+randomString)
-    const copy = db.collection('discountMatrix_'+randomString);
+    const randomString = new Date();
+    console.log(randomString);
+    await db.createCollection('discountMatrix_'+randomString.toISOString())
+    const copy = db.collection('discountMatrix_'+randomString.toISOString());
     coll.find({}).toArray().then(documents=>{
       copy.insertMany(documents).then(()=>{
         arr_obj.map(async (el)=>{
@@ -70,10 +71,33 @@ const copyAndChange = async (req,res)=>{
       })
     });
   }
-
+}
+//Create storage
+const createStorage = async (req, res)=>{
+  const db = await dbPromise;
+  const stor = await db.collection('storage');
+  const {baseline, discount} = req.body;
+  storage = {
+    baseline, 
+    discount
+  };
+  o_id = new ObjectId('65f0a0cf757eb26f583067b4')
+  const doc = await stor.updateOne({temp_id: 0}, {$set: storage})
+  console.log(doc);
+  //await stor.insertOne(storage);
+  return res.status(200).json(storage);
+}
+//Get storage
+const getStorage = async (req,res)=>{
+  const db = await dbPromise;
+  const stor = await db.collection('storage');
+  const doc = await stor.findOne({temp_id: 0});
+  return res.status(200).json(doc);
 }
 module.exports = {
   getAllMatrix,
   getMatrix,
-  copyAndChange
+  copyAndChange,
+  createStorage,
+  getStorage
 }

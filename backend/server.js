@@ -12,20 +12,10 @@ const adminRoutes = require('./routes/admin.js');
 const userRoutes = require('./routes/user.js');
 
 const app = express();
-// const client = new MongoClient(process.env.MONGO_URI);
-// const database = client.db('Avito');
 
-// //Connect to db and start a server
-// client.connect().then(()=>{
-//   console.log('DB connected');
-//   app.listen(4000, ()=>{
-//     console.log('Listening');
-//   })
-// })
 dbPromise.then(
   app.listen(4000,()=>{
     console.log('Listening');
-    console.log(process.env.MONGO_URI);
   })
 )
 

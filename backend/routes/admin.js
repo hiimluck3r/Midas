@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 //Controller
-const {getAllMatrix, getMatrix, copyAndChange} = require('../controllers/adminController.js');
+const {getAllMatrix, getMatrix, copyAndChange, createStorage, getStorage} = require('../controllers/adminController.js');
 
 /* ROUTES */
 
@@ -16,6 +16,11 @@ router.get('/:id/:page', getMatrix);
 //Copy matrix and change it
 router.post('/', copyAndChange);
 
+//Create storage
+router.post('/storage', createStorage)
+
+//Get storage
+router.get('/storage', getStorage)
 
 
 module.exports = router;
