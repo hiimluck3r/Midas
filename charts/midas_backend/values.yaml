@@ -110,9 +110,10 @@ mongodb-sharded:
     pullPolicy: IfNotPresent
   
   auth:
-    enabled: false
+    enabled: true
     rootUser: root
     rootPassword: root #changeme
+    replicaSetKey: root #changeme
     existingSecret: ""
   shards: 2
   
