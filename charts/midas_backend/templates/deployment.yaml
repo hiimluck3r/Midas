@@ -46,9 +46,14 @@ spec:
             - name: api
               containerPort: 4000
               protocol: TCP
-            - name: db
-              containerPort: 3000
-              protocol: TCP
+          
+          livenessProbe:
+            httpGet:
+              path: /admin/api
+              port: api
+            initialDelaySeconds: 5
+            periodSeconds: 5
+                                 
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}
