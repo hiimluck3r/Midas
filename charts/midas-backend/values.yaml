@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/hiimluck3r/midas
+  repository: ghcr.io/hiimluck3r/midas-backend
   pullPolicy: Always #change to IfNotPresent in production
   # Overrides the image tag whose default is latest.
   tag: "" #latest is default
@@ -39,13 +39,17 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-service:
-  type: ClusterIP
-  port: 80
+services:
+  api:
+    type: ClusterIP
+    port: 4000
+  db:
+    type: ClusterIP
+    port: 3000
 
 httproute:
   enabled: false
-  host: analytics.example.com
+  host: api.example.com
   annotations: {}
     # konghq.com/strip-path: '{{ strip_path }}'
   spec:
@@ -88,3 +92,33 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+mongodb-sharded:
+  enabled: true
+  service:
+    ports:
+      mongodb: 27017
+
+  image:
+    registry: docker.io
+    repository: bitnami/mongodb-sharded
+    tag: 7.0.6-debian-12-r0
+    digest: ""
+    pullPolicy: IfNotPresent
+  
+  auth:
+    rootUser: root
+    rootPassword: root #changeme
+    existingSecret: ""
+  shards: 2
+  
+  common:
+    initScriptsCM: "initdb"
+    initdb: true
+  
+  mongos:
+    replicaCount: 1
+    useStatefulSet: true
+    servicePerReplica:
+      enabled: true
+      port: 27017
