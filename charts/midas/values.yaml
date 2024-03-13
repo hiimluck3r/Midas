@@ -46,7 +46,7 @@ service:
 backend: api.novodigital.ru
 
 httproute:
-  enabled: false
+  enabled: true
   host: midas.novodigital.ru
   annotations: {}
     # konghq.com/strip-path: '{{ strip_path }}'
