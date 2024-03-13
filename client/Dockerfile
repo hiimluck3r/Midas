@@ -3,7 +3,7 @@ FROM node:20-alpine as BUILD_IMAGE
 WORKDIR /app/midas
 
 COPY package.json .
-RUN npm install && npm install @emotion/react @emotion/styled
+RUN npm install && npm install @emotion/react @emotion/styled axios
 
 COPY . .
 RUN npm run build
@@ -14,7 +14,7 @@ WORKDIR /app/midas
 
 COPY package.json .
 COPY vite.config.js .
-RUN npm install && npm install @emotion/react @emotion/styled
+RUN npm install && npm install @emotion/react @emotion/styled axios
 COPY --from=BUILD_IMAGE /app/midas/dist/ /app/midas/dist/
 
 EXPOSE 8080

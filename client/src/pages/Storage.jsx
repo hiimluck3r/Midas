@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import {TextField, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import axios from 'axios';
 
@@ -16,6 +16,8 @@ function Storage() {
     });
 
     const [segments, setSegments] = useState([]); // Состояние для хранения списка сегментов
+
+    const [matrixSearchTerm, setMatrixSearchTerm] = useState(''); // Состояние для строки поиска по матрицам
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -63,6 +65,16 @@ function Storage() {
         const term = event.target.value;
         setSearchTerm(term);
         const results = names.filter(name => name.name.toLowerCase().includes(term.toLowerCase())).slice(0, 5);
+        setSearchResults(results);
+    };
+
+    const handleMatrixSearch = (event) => {
+        const term = event.target.value;
+        setMatrixSearchTerm(term);
+        const results = names.filter(name => 
+            name.name.toLowerCase().includes(term.toLowerCase()) || 
+            name.uuid.toLowerCase().includes(term.toLowerCase())
+        ).slice(0, 5);
         setSearchResults(results);
     };
 
@@ -138,6 +150,32 @@ function Storage() {
 
     return (
         <div>
+            {/* Строка поиска по именам матриц */}
+<TextField
+    label="Поиск по матрицам"
+    variant="outlined"
+    value={searchTerm}
+    onChange={handleSearch}
+    fullWidth
+    sx={{
+        '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+                borderColor: '#ffaa01'
+            },
+            '&:hover fieldset': {
+                borderColor: '#ffaa01'
+            },
+            '&.Mui-focused fieldset': {
+                borderColor: '#ffaa01'
+            },
+            '&.Mui-focused label': {
+                color: '#ffaa01'
+            }
+        }
+    }}
+/>
+
+
             <Button onClick={handlePreviousPage} disabled={currentPage === 0 || matrixData.length === 0} sx={{ color: '#ffaa01' }}>Предыдущая страница</Button>
             <Button onClick={handleNextPage} disabled={matrixData.length === 0} sx={{ color: '#ffaa01' }}>Следующая страница</Button>
 
@@ -154,8 +192,6 @@ function Storage() {
                     </ListItem>
                 ))}
             </List>
-
-
 
             {/* Таблица с хранилищами и сегментами */}
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -187,35 +223,32 @@ function Storage() {
                 <div>
                     <Typography variant="h6">Сегменты:</Typography>
                     <TableContainer component={Paper}>
-                    <TableContainer component={Paper}>
-    <Table aria-label="segment table">
-        <TableHead>
-            <TableRow>
-                {segments.slice(0, Math.ceil(segments.length / 4)).map(segment => (
-                    <TableCell key={segment.id} align="center">{segment.segment}</TableCell>
-                ))}
-            </TableRow>
-        </TableHead>
-        <TableBody>
-            <TableRow>
-                {segments.slice(Math.ceil(segments.length / 4), Math.ceil(segments.length / 2)).map(segment => (
-                    <TableCell key={segment.id} align="center">{segment.segment}</TableCell>
-                ))}
-            </TableRow>
-            <TableRow>
-                {segments.slice(Math.ceil(segments.length / 2), Math.ceil((segments.length / 4) * 3)).map(segment => (
-                    <TableCell key={segment.id} align="center">{segment.segment}</TableCell>
-                ))}
-            </TableRow>
-            <TableRow>
-                {segments.slice(Math.ceil((segments.length / 4) * 3)).map(segment => (
-                    <TableCell key={segment.id} align="center">{segment.segment}</TableCell>
-                ))}
-            </TableRow>
-        </TableBody>
-    </Table>
-</TableContainer>
-
+                        <Table aria-label="segment table">
+                            <TableHead>
+                                <TableRow>
+                                    {segments.slice(0, Math.ceil(segments.length / 4)).map(segment => (
+                                        <TableCell key={segment.id} align="center">{segment.segment}</TableCell>
+                                    ))}
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                <TableRow>
+                                    {segments.slice(Math.ceil(segments.length / 4), Math.ceil(segments.length / 2)).map(segment => (
+                                        <TableCell key={segment.id} align="center">{segment.segment}</TableCell>
+                                    ))}
+                                </TableRow>
+                                <TableRow>
+                                    {segments.slice(Math.ceil(segments.length / 2), Math.ceil((segments.length / 4) * 3)).map(segment => (
+                                        <TableCell key={segment.id} align="center">{segment.segment}</TableCell>
+                                    ))}
+                                </TableRow>
+                                <TableRow>
+                                    {segments.slice(Math.ceil((segments.length / 4) * 3)).map(segment => (
+                                        <TableCell key={segment.id} align="center">{segment.segment}</TableCell>
+                                    ))}
+                                </TableRow>
+                            </TableBody>
+                        </Table>
                     </TableContainer>
                 </div>
             </div>
