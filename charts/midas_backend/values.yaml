@@ -113,7 +113,7 @@ mongodb-sharded:
     enabled: true
     rootUser: root
     rootPassword: root #changeme
-    replicaSetKey: root #changeme
+    replicaSetKey: rootyroot #changeme
     existingSecret: ""
   shards: 2
   
