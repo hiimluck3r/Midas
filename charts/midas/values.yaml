@@ -43,7 +43,7 @@ service:
   type: ClusterIP
   port: 80
 
-backend: api.novodigital.ru
+backend: https://api.novodigital.ru
 
 httproute:
   enabled: true
