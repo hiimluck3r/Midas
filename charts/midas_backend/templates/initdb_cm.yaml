@@ -1,4 +1,4 @@
-{{- if .Values.mongodb-sharded.common.initdb -}}
+{{- if index .Values "mongodb-sharded" "common" "initdb" -}}
 apiVersion: v1
 data:
   sharded-initdb.sh: |
@@ -20,6 +20,6 @@ data:
     fi
 kind: ConfigMap
 metadata:
-  name: {{ .Values.mongodb-sharded.common.initScriptsCM }}
+  name: {{index .Values "mongodb-sharded" "common" "initScriptsCM" }}
   namespace: default
 {{- end }}

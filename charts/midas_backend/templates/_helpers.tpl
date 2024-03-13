@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "midas-backend.name" -}}
+{{- define "midas_backend.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "midas-backend.fullname" -}}
+{{- define "midas_backend.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "midas-backend.chart" -}}
+{{- define "midas_backend.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "midas-backend.labels" -}}
-helm.sh/chart: {{ include "midas-backend.chart" . }}
-{{ include "midas-backend.selectorLabels" . }}
+{{- define "midas_backend.labels" -}}
+helm.sh/chart: {{ include "midas_backend.chart" . }}
+{{ include "midas_backend.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "midas-backend.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "midas-backend.name" . }}
+{{- define "midas_backend.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "midas_backend.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "midas-backend.serviceAccountName" -}}
+{{- define "midas_backend.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "midas-backend.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "midas_backend.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
