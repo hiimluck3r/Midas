@@ -51,14 +51,14 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
-              port: http
+              path: /admin/api
+              port: 4000
             initialDelaySeconds: 5
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /
-              port: http
+              path: /admin/api
+              port: 4000
             initialDelaySeconds: 5
             periodSeconds: 10
           resources:
