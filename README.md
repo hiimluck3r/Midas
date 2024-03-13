@@ -1,17 +1,29 @@
-# React + Vite
+<h1 align="center" id="title">Midas</h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p align="center"><img src="pictures/midas_logo.png" width ="200" height ="200" alt="project-image"></p>
 
-Currently, two official plugins are available:
+<p align="center" id="description"><strong>Управляйте ценами лёгким касанием руки.</strong></p>
+</p>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<h2>🎯 О проекте:</h2>
 
+Данный проект - наше видение того, как должен выглядеть сервис управления ценами для аналитика и API для пользователя.
 
-To start a project, you need to register an "npm run dev"
-Node Version: 10.4.0
-To install dependencies, the command in the terminal is "npm install" or "npm i" and npm install @emotion/react @emotion/styled
+Мы во многом рассматривали проект в том числе с точки зрения интеграции, поэтому проект можно развернуть в разных форматах: от обычного docker-compose до отказоустойчивых кластеров с большим количеством реплик.
 
+Больше о каком-либо элементе, будь это фронт, бэк или helm-чарты, вы можете узнать в соответствующих директориях backend и frontend (или в ветке charts для Helm-чартов).
 
+<h2>🛡️ Лицензия:</h2>
 
-then "npm dev" is enough
+Проект распространяется по лицензии MIT
+
+<h2>🐛 Баги и вопросы:</h2>
+
+Создайте Issue с необходимым тегом:
+* Feature request
+* Bug report
+* Question
+
+<h2>💖Понравился проект?</h2>
+
+Тогда поставьте нам звезду :)
