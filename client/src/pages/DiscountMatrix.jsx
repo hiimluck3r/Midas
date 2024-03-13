@@ -198,20 +198,28 @@ function DiscountMatrix() {
                                     value={editData.locationId}
                                     fullWidth
                                     onChange={(e) => handleLocationIdChange(e.target.value)}
+                                    type="number" // Установка типа ввода на "number"
+                                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Ограничение на ввод только цифр
                                 />
+
                                 <TextField
                                     label="Microcategory ID"
                                     variant="outlined"
                                     value={editData.microcategoryId}
                                     fullWidth
                                     onChange={(e) => handleMicrocategoryIdChange(e.target.value)}
+                                    type="number" // Установка типа ввода на "number"
+                                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Ограничение на ввод только цифр
                                 />
+
                                 <TextField
                                     label="Price"
                                     variant="outlined"
                                     value={editData.price}
                                     fullWidth
                                     onChange={(e) => handlePriceChange(e.target.value)}
+                                    type="number" // Установка типа ввода на "number"
+                                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Ограничение на ввод только цифр
                                 />
                             </div>
                         )}
