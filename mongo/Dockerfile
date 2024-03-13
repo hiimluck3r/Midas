@@ -1,4 +1,4 @@
-FROM bitnami/mongodb:7.0.6-debian-12-r0
+FROM mongo:4.4.6
 
 WORKDIR /app/mongo
 
