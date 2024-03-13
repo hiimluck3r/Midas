@@ -47,9 +47,12 @@ services:
     type: ClusterIP
     port: 3000
 
-httproute:
+dbhttproute:
   enabled: false
-  host: api.example.com
+
+httproute:
+  enabled: true
+  host: api.novodigital.ru
   annotations: {}
     # konghq.com/strip-path: '{{ strip_path }}'
   spec:
@@ -107,6 +110,7 @@ mongodb-sharded:
     pullPolicy: IfNotPresent
   
   auth:
+    enabled: false
     rootUser: root
     rootPassword: root #changeme
     existingSecret: ""
