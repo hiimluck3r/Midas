@@ -45,6 +45,9 @@ const getPrice = async (req, res)=>{
   }
   for(let u = 0;u<uuidStorage.length;u++){
     const targetCollection = arr.find(el=>el.info.uuid.equals(uuidStorage[u])); // find collection by id
+    if(!targetCollection){
+      return res.send(404);
+    }
     const coll = await db.collection(targetCollection.name); // get actual collection
     for(let i = 0;i<locationStorage.length;i++){
       for(let j = 0;j<categoryStorage.length;j++){
@@ -64,6 +67,9 @@ const getPrice = async (req, res)=>{
     }
   }
   const bsTarget = arr.find(el=>el.info.uuid.equals(storage.baseline));
+  if(!bsTarget){
+    return res.send(404);
+  }
   const bsColl = await db.collection(bsTarget.name);
   for(let i = 0;i<locationStorage.length;i++){
     for(let j = 0;j<categoryStorage.length;j++){

@@ -17,13 +17,22 @@ const getAllMatrix = async (req, res)=>{
   return res.status(200).json(names);
 }
 const getMatrix = async (req, res)=>{
-  const uuid = new UUID(req.params.id);
+  let uuid;
+  try{
+    uuid = new UUID(req.params.id);
+  } catch(err){
+    return res.send(404);
+  }
+  
   const page = req.params.page;
 
   const db = await dbPromise; // get db
   const arr = await db.listCollections().toArray(); //get list of collections in db
 
   const targetCollection = arr.find(el=>el.info.uuid.equals(uuid)); // find collection by id (idk why it is not actual collection)
+  if(!targetCollection){
+    return res.send(404);
+  }
   const coll = await db.collection(targetCollection.name); // get actual collection
   const documents = await coll.find({}).skip(page*20).limit(20).toArray(); //get firts 20 elements
 
@@ -37,6 +46,9 @@ const copyAndChange = async (req,res)=>{
   const arr = await db.listCollections().toArray(); //get list of collections in db
 
   const targetCollection = arr.find(el=>el.info.uuid.equals(uuid)); // find coll by uuid (idk why it is not actual collection)
+  if(!targetCollection){
+    return res.send(404);
+  }
   const coll = await db.collection(targetCollection.name); // get actual coll
 
   if(targetCollection.name.includes('baseline')){ // check if baseline
