@@ -6,12 +6,12 @@ import axios from 'axios';
 function BaseLine() {
     const [names, setNames] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [searchResults, setSearchResults] = useState([]);
     const [selectedUUID, setSelectedUUID] = useState(null); // Хранение выбранного UUID
     const [matrixData, setMatrixData] = useState([]); // Хранение данных по выбранной матрице
     const [currentPage, setCurrentPage] = useState(0); // Номер текущей страницы
     const [editData, setEditData] = useState(null); // Данные для редактирования
     const [openEditDialog, setOpenEditDialog] = useState(false); // Состояние открытия диалога редактирования
+    const [searchResults, setSearchResults] = useState([]); // Результаты поиска
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
     useEffect(() => {
@@ -20,6 +20,7 @@ function BaseLine() {
                 const response = await axios.get(`${backendUrl}/api/admin`);
                 const filteredData = response.data.filter(item => item.name.startsWith('baselineMatrix_'));
                 setNames(filteredData.slice(0, 10));
+                setSearchResults(filteredData); // Установка всех данных в searchResults
             } catch (error) {
                 console.error('Произошла ошибка при запросе к API:', error);
             }
@@ -42,11 +43,14 @@ function BaseLine() {
         fetchMatrixData();
     }, [selectedUUID, currentPage]);
 
+    useEffect(() => {
+        const results = names.filter(name => name.name.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, 5);
+        setSearchResults(results);
+    }, [names, searchTerm]);
+
     const handleSearch = (event) => {
         const term = event.target.value;
         setSearchTerm(term);
-        const results = names.filter(name => name.name.toLowerCase().includes(term.toLowerCase())).slice(0, 5);
-        setSearchResults(results);
     };
 
     const handleAddName = (name, uuid) => {
@@ -125,7 +129,6 @@ function BaseLine() {
                 onChange={handleSearch}
                 fullWidth
                 sx={{
-
                     '& .MuiOutlinedInput-root': {
                         '& fieldset': {
                             borderColor: '#ffaa01'

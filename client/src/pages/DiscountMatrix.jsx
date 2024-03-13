@@ -14,14 +14,13 @@ function DiscountMatrix() {
     const [openEditDialog, setOpenEditDialog] = useState(false); // Состояние открытия диалога редактирования
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-
-
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`${backendUrl}/api/admin`);
                 const filteredData = response.data.filter(item => item.name.startsWith('discountMatrix'));
                 setNames(filteredData.slice(0, 10));
+                setSearchResults(filteredData); // Установка всех данных в searchResults
             } catch (error) {
                 console.error('Произошла ошибка при запросе к API:', error);
             }
@@ -97,8 +96,6 @@ function DiscountMatrix() {
         }
     };
 
-
-
     const handlePriceChange = (value) => {
         setEditData(prevState => ({
             ...prevState,
@@ -129,7 +126,6 @@ function DiscountMatrix() {
                 onChange={handleSearch}
                 fullWidth
                 sx={{
-
                     '& .MuiOutlinedInput-root': {
                         '& fieldset': {
                             borderColor: '#ffaa01'
