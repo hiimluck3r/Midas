@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import { Add, Edit } from '@mui/icons-material';
+import { TextField, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Typography, Button } from '@mui/material';
+import { Add } from '@mui/icons-material';
 import axios from 'axios';
 
 function Storage() {
@@ -16,19 +16,20 @@ function Storage() {
     });
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`${backendUrl}/api/admin`);
-                const filteredData = response.data.filter(item => item.name.startsWith('baselineMatrix_') || item.name.startsWith('discountMatrix_'));
+                const filteredData = response.data.filter(item => item.name.startsWith('baselineMatrix_') || item.name.startsWith('discountMatrix'));
                 setNames(filteredData.slice(0, 10));
+                setSearchResults(filteredData); // Установка всех данных в searchResults
             } catch (error) {
                 console.error('Произошла ошибка при запросе к API:', error);
             }
         };
         fetchData();
     }, []);
+
 
     useEffect(() => {
         const fetchMatrixData = async () => {
@@ -94,23 +95,23 @@ function Storage() {
                 baseline: storageData.baseLineMatrix.name,
                 discount: {}
             };
-    
+
             storageData.discountMatrices.forEach(matrix => {
                 formattedData.discount[matrix.uuid] = matrix.name;
             });
-    
+
             const response = await axios.post(`${backendUrl}/api/admin/storage`, formattedData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
-    
+
             console.log('Storage успешно создан:', response.data);
         } catch (error) {
             console.error('Ошибка при создании Storage:', error);
         }
     };
-    
+
     const handleNextPage = () => {
         setCurrentPage(currentPage + 1);
     };
@@ -169,7 +170,7 @@ function Storage() {
                 <Typography>{`baseline: ${storageData.baseLineMatrix.name}`}</Typography>
             )}
             {storageData.discountMatrices.map((matrix, index) => (
-                <Typography key={index}>{`${matrix.name}: ${matrix.uuid}`}</Typography>
+                <Typography key={index}>{`discount:${matrix.name}`}</Typography>
             ))}
 
             <Button onClick={handleCreateStorage} variant="contained" color="primary">Создать Storage</Button>
