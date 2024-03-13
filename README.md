@@ -1,17 +1,43 @@
-# React + Vite
+<h1 align="center" id="title">Midas</h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p align="center"><img src="pictures/midas_logo.png" width ="200" height ="200" alt="project-image"></p>
 
-Currently, two official plugins are available:
+<p id="description"><strong>Управляйте ценами лёгким касанием руки.</strong>
+</p>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<h2>🎯 Helm-чарты:</h2>
 
+Предоставляемые Helm-чарты позволят поднять:
 
-To start a project, you need to register an "npm run dev"
-Node Version: 10.4.0
-To install dependencies, the command in the terminal is "npm install" or "npm i" and npm install @emotion/react @emotion/styled
+* API и MongoDB ReplicaSet
+* Frontend-панель
 
+API и СУБД рекомендуется держать на одном кластере, однако если есть потребность в репликации данных на разные ДЦ, то стоит рассматривать NFS, либо проприетарные методы репликации у Cloud-провайдеров. Все зависит от <strong>вашей</strong> инфраструктуры.
 
+API и панель аналитика являются stateless приложениями, в то время как СУБД нужно постоянное хранилище.
 
-then "npm dev" is enough
+Разработка и развертка демо проводилась на K3S кластере, развернутом при помощи [h2m](https://github.com/hiimluck3r/h2m).
+
+<h2>💻 Создано при помощи:</h2>
+
+Использованные технологии:
+
+*   Helm
+*   K3S
+*   Bash
+*   Proxmox
+
+<h2>🛡️ Лицензия:</h2>
+
+Проект распространяется по лицензии MIT
+
+<h2>🐛 Баги и вопросы:</h2>
+
+Создайте Issue с необходимым тегом:
+* Feature request
+* Bug report
+* Question
+
+<h2>💖Понравился проект?</h2>
+
+Тогда поставьте нам звезду :)
