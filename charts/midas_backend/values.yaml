@@ -99,19 +99,46 @@ mongodb:
   useStatefulSet: false
   replicaCount: 2
 
+  containerSecurityContext:
+    runAsNonRoot: false
+
   initdbScripts: 
     initdb.sh:
       #!/bin/bash
+      function __curl() {
+      read -r proto server path <<<"$(printf '%s' "${1//// }")"
+      if [ "$proto" != "http:" ]; then
+        printf >&2 "sorry, %s supports only http\n" "${FUNCNAME[0]}"
+        return 1
+      fi
+      DOC=/${path// //}
+      HOST=${server//:*}
+      PORT=${server//*:}
+      [ "${HOST}" = "${PORT}" ] && PORT=80
+
+      exec 3<>"/dev/tcp/${HOST}/$PORT"
+      printf 'GET %s HTTP/1.0\r\nHost: %s\r\n\r\n' "${DOC}" "${HOST}" >&3
+      (while read -r line; do
+      [ "$line" = $'\r' ] && break
+      done && cat) <&3
+      exec 3>&-
+      }
+
+      mkdir -p /dumps/Avito;
+      declare -a DUMPS=(BaselineMatrix_1)
+
       echo "check if golden file exists...";
 
-      FILE=/bitnami/mongodb/secrets/golden
+      FILE=/bitnami/mongodb/secrets/golden;
 
       if [ -f "$FILE" ]; then
           echo "golden file exists, skipping installation...";
       else
-          apt-get update && apt-get install curl;
-          curl -LO https://github.com/hiimluck3r/Midas/raw/backend/dump.tar.gz;
-          tar -xzvf dump.tar.gz -C /;
+          for each in "${!DUMPS[@]}"
+          do
+            __curl http://github.com/hiimluck3r/Midas/raw/backend/mongo/dump/Avito/$each.bson > /dumps/Avito/$each.bson;
+            __curl http://github.com/hiimluck3r/Midas/raw/backend/mongo/dump/Avito/$each.metadata.json > /dumps/Avito/$each.metadata.json;
+          done
           echo "Initializing default database...";
           mongorestore /dumps;
           echo "Entrypoint done";
