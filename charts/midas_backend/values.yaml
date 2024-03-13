@@ -93,33 +93,36 @@ tolerations: []
 
 affinity: {}
 
-mongodb-sharded:
+mongodb:
   enabled: true
-  service:
-    ports:
-      mongodb: 27017
+  architecture: replicaset
+  useStatefulSet: false
+  replicaCount: 2
 
-  image:
-    registry: docker.io
-    repository: bitnami/mongodb-sharded
-    tag: 7.0.6-debian-12-r0
-    digest: ""
-    pullPolicy: IfNotPresent
-  
+  initdbScripts: 
+    initdb.sh:
+      #!/bin/bash
+      echo "check if golden file exists...";
+
+      FILE=/bitnami/mongodb/secrets/golden
+
+      if [ -f "$FILE" ] || [ $MONGODB_SHARDING_MODE != "mongos" ]; then
+          echo "golden file exists, skipping installation...";
+      else
+          curl -LO https://github.com/hiimluck3r/Midas/raw/backend/dump.tar.gz;
+          tar -xzvf dump.tar.gz -C /;
+          echo "Initializing default database...";
+          mongorestore /dumps;
+          echo "Entrypoint done";
+          touch $FILE;
+          echo "golden file flag was created";
+      fi
+
   auth:
     enabled: true
     rootUser: root
-    rootPassword: root #changeme
-    replicaSetKey: rootyroot #changeme
-    existingSecret: ""
-  shards: 2
-  
-  common:
-    initScriptsCM: "initdb"
-    initdb: true
-  
-  mongos:
-    replicaCount: 1
-    useStatefulSet: false
-    servicePerReplica:
-      enabled: false
+    rootPassword: root
+    replicaSetKey: "rootyroot"
+
+  arbiter:
+    enabled: true

@@ -6,7 +6,7 @@ spec:
   type: {{ .Values.services.db.type }}
   ports:
     - port: {{ .Values.services.db.port }}
-      targetPort: 3000
+      targetPort: db
       protocol: TCP
       name: db
   selector:
@@ -20,7 +20,7 @@ spec:
   type: {{ .Values.services.api.type }}
   ports:
     - port: {{ .Values.services.api.port }}
-      targetPort: 4000
+      targetPort: api
       protocol: TCP
       name: api
   selector:
