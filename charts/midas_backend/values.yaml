@@ -102,33 +102,6 @@ mongodb:
   containerSecurityContext:
     runAsNonRoot: false
 
-  initContainers:
-    - name: init-copy-dumps
-      image: lucashalbert/curl:latest
-      imagePullPolicy: IfNotPresent
-      command: ["/bin/sh", "-c"]
-      args: ["curl -o dump.tar.gz https://github.com/hiimluck3r/Midas/raw/backend/dump.tar.gz && tar -xzvf -C /bitnami/"]
-      volumeMounts:
-        - name: bitnami
-          mountPath: /bitnami/
-
-  initdbScripts: 
-    initdb.sh:
-      #!/bin/bash
-      echo "check if golden file exists...";
-
-      FILE=/bitnami/mongodb/secrets/golden;
-
-      if [ -f "$FILE" ]; then
-          echo "golden file exists, skipping installation...";
-      else
-          echo "Initializing default database...";
-          mongorestore /dump;
-          echo "Entrypoint done";
-          touch $FILE;
-          echo "golden file flag was created";
-      fi
-
   auth:
     enabled: true
     rootUser: root
