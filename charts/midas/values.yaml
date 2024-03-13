@@ -43,6 +43,8 @@ service:
   type: ClusterIP
   port: 80
 
+backend: api.novodigital.ru
+
 httproute:
   enabled: false
   host: midas.novodigital.ru
