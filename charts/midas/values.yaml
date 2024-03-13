@@ -45,7 +45,7 @@ service:
 
 httproute:
   enabled: false
-  host: analytics.example.com
+  host: midas.novodigital.ru
   annotations: {}
     # konghq.com/strip-path: '{{ strip_path }}'
   spec:
