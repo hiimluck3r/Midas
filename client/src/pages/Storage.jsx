@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Typography, Button } from '@mui/material';
+import { List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import axios from 'axios';
 
@@ -15,7 +15,10 @@ function Storage() {
         discountMatrices: [] // Массив матриц скидок
     });
 
+    const [segments, setSegments] = useState([]); // Состояние для хранения списка сегментов
+
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -27,9 +30,19 @@ function Storage() {
                 console.error('Произошла ошибка при запросе к API:', error);
             }
         };
-        fetchData();
-    }, []);
 
+        const fetchSegments = async () => {
+            try {
+                const response = await axios.get('https://api.novodigital.ru/api/json/segments');
+                setSegments(response.data);
+            } catch (error) {
+                console.error('Произошла ошибка при запросе сегментов:', error);
+            }
+        };
+
+        fetchData();
+        fetchSegments();
+    }, []);
 
     useEffect(() => {
         const fetchMatrixData = async () => {
@@ -79,7 +92,8 @@ function Storage() {
                         ...prevData.discountMatrices,
                         {
                             name,
-                            uuid
+                            uuid,
+                            segmentId: '' // Начальное значение сегмента
                         }
                     ]
                 }));
@@ -92,12 +106,12 @@ function Storage() {
     const handleCreateStorage = async () => {
         try {
             const formattedData = {
-                baseline: storageData.baseLineMatrix.name,
+                baseline: `baseline_matix_${storageData.baseLineMatrix.name.split('_')[1]}`, // Форматируем имя базовой матрицы
                 discount: {}
             };
 
             storageData.discountMatrices.forEach(matrix => {
-                formattedData.discount[matrix.uuid] = matrix.name;
+                formattedData.discount[matrix.name] = { segmentId: matrix.segmentId }; // Включаем только имя и ID сегмента в формат данных
             });
 
             const response = await axios.post(`${backendUrl}/api/admin/storage`, formattedData, {
@@ -124,30 +138,6 @@ function Storage() {
 
     return (
         <div>
-            <TextField
-                label="Поиск по матрицам"
-                variant="outlined"
-                value={searchTerm}
-                onChange={handleSearch}
-                fullWidth
-                sx={{
-                    '& .MuiOutlinedInput-root': {
-                        '& fieldset': {
-                            borderColor: '#ffaa01'
-                        },
-                        '&:hover fieldset': {
-                            borderColor: '#ffaa01'
-                        },
-                        '&.Mui-focused fieldset': {
-                            borderColor: '#ffaa01'
-                        },
-                        '&.Mui-focused label': {
-                            color: '#ffaa01'
-                        }
-                    }
-                }}
-            />
-
             <Button onClick={handlePreviousPage} disabled={currentPage === 0 || matrixData.length === 0} sx={{ color: '#ffaa01' }}>Предыдущая страница</Button>
             <Button onClick={handleNextPage} disabled={matrixData.length === 0} sx={{ color: '#ffaa01' }}>Следующая страница</Button>
 
@@ -165,15 +155,70 @@ function Storage() {
                 ))}
             </List>
 
-            <Typography variant="h6">Собранный storage:</Typography>
-            {storageData.baseLineMatrix && (
-                <Typography>{`baseline: ${storageData.baseLineMatrix.name}`}</Typography>
-            )}
-            {storageData.discountMatrices.map((matrix, index) => (
-                <Typography key={index}>{`discount:${matrix.name}`}</Typography>
-            ))}
 
-            <Button onClick={handleCreateStorage} variant="contained" color="primary">Создать Storage</Button>
+
+            {/* Таблица с хранилищами и сегментами */}
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div>
+                    <Typography variant="h6">Собранный storage:</Typography>
+                    {storageData.baseLineMatrix && (
+                        <Typography>{`baseline: ${storageData.baseLineMatrix.name}`}</Typography>
+                    )}
+                    {storageData.discountMatrices.map((matrix, index) => (
+                        <div key={index}>
+                            <Typography>{`discount:${matrix.name}`}</Typography>
+                            <select value={matrix.segmentId} onChange={(e) => {
+                                const newSegmentId = e.target.value;
+                                setStorageData(prevData => ({
+                                    ...prevData,
+                                    discountMatrices: prevData.discountMatrices.map((item, idx) => idx === index ? { ...item, segmentId: newSegmentId } : item)
+                                }));
+                            }}>
+                                <option value="">Выберите сегмент</option>
+                                {segments.map(segment => (
+                                    <option key={segment.id} value={segment.segment}>{segment.segment}</option>
+                                ))}
+                            </select>
+                        </div>
+                    ))}
+
+                    <Button onClick={handleCreateStorage} variant="contained" color="primary">Создать Storage</Button>
+                </div>
+                <div>
+                    <Typography variant="h6">Сегменты:</Typography>
+                    <TableContainer component={Paper}>
+                    <TableContainer component={Paper}>
+    <Table aria-label="segment table">
+        <TableHead>
+            <TableRow>
+                {segments.slice(0, Math.ceil(segments.length / 4)).map(segment => (
+                    <TableCell key={segment.id} align="center">{segment.segment}</TableCell>
+                ))}
+            </TableRow>
+        </TableHead>
+        <TableBody>
+            <TableRow>
+                {segments.slice(Math.ceil(segments.length / 4), Math.ceil(segments.length / 2)).map(segment => (
+                    <TableCell key={segment.id} align="center">{segment.segment}</TableCell>
+                ))}
+            </TableRow>
+            <TableRow>
+                {segments.slice(Math.ceil(segments.length / 2), Math.ceil((segments.length / 4) * 3)).map(segment => (
+                    <TableCell key={segment.id} align="center">{segment.segment}</TableCell>
+                ))}
+            </TableRow>
+            <TableRow>
+                {segments.slice(Math.ceil((segments.length / 4) * 3)).map(segment => (
+                    <TableCell key={segment.id} align="center">{segment.segment}</TableCell>
+                ))}
+            </TableRow>
+        </TableBody>
+    </Table>
+</TableContainer>
+
+                    </TableContainer>
+                </div>
+            </div>
         </div>
     );
 }
