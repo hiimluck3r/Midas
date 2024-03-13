@@ -14,6 +14,14 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+livenessProbe:
+  initialDelaySeconds: 15
+  periodSeconds: 7
+
+readinessProbe:
+  initialDelaySeconds: 5
+  periodSeconds: 5
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: false

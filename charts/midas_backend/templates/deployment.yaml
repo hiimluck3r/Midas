@@ -51,15 +51,15 @@ spec:
             httpGet:
               path: /admin/api/json/segments
               port: api
-            initialDelaySeconds: 5
-            periodSeconds: 3
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
 
           readinessProbe:
             httpGet:
               path: /admin/api
               port: api
-            initialDelaySeconds: 5
-            periodSeconds: 5
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
                                  
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
