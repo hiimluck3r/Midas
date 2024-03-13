@@ -47,9 +47,6 @@ services:
     type: ClusterIP
     port: 3000
 
-dbhttproute:
-  enabled: false
-
 httproute:
   enabled: true
   host: api.novodigital.ru
