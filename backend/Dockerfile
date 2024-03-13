@@ -3,6 +3,7 @@ WORKDIR /app/midas-backend
 
 COPY . .
 RUN npm install
+RUN npm install nodemon
 
 
 EXPOSE 4000
