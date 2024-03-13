@@ -49,6 +49,13 @@ spec:
           
           livenessProbe:
             httpGet:
+              path: /admin/api/json/segments
+              port: api
+            initialDelaySeconds: 5
+            periodSeconds: 3
+
+          readinessProbe:
+            httpGet:
               path: /admin/api
               port: api
             initialDelaySeconds: 5
