@@ -2,13 +2,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "midasbackend.fullname" . }}-db
-  labels:
-    {{- include "midasbackend.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.services.db.type }}
   ports:
     - port: {{ .Values.services.db.port }}
-      targetPort: db
+      targetPort: 3000
       protocol: TCP
       name: db
   selector:
@@ -18,13 +16,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "midasbackend.fullname" . }}-api
-  labels:
-    {{- include "midasbackend.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.services.api.type }}
   ports:
     - port: {{ .Values.services.api.port }}
-      targetPort: api
+      targetPort: 4000
       protocol: TCP
       name: api
   selector:

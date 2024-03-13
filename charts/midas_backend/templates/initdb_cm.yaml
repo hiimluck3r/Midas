@@ -20,6 +20,6 @@ data:
     fi
 kind: ConfigMap
 metadata:
-  name: {{index .Values "mongodb-sharded" "common" "initScriptsCM" }}
+  name: initdb
   namespace: default
 {{- end }}
