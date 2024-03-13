@@ -1,4 +1,4 @@
-<h1 align="center" id="title">Midas</h1>
+<h1 align="center" id="title">Midas - Helm Charts</h1>
 
 <p align="center"><img src="pictures/midas_logo.png" width ="200" height ="200" alt="project-image"></p>
 
