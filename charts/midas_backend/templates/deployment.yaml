@@ -40,8 +40,8 @@ spec:
           - name: MONGO_URI
             valueFrom:
               secretKeyRef:
-                name: MONGO_URI_SECRET
-                key: MONGO_URI
+                name: mongo
+                key: mongo
           ports:
             - name: api
               containerPort: 4000

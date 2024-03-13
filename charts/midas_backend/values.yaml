@@ -120,5 +120,4 @@ mongodb-sharded:
     replicaCount: 1
     useStatefulSet: true
     servicePerReplica:
-      enabled: true
-      port: 27017
+      enabled: false

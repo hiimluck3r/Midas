@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "midasbackend.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ .Values.services.db.type }}
   ports:
     - port: {{ .Values.services.db.port }}
       targetPort: db
@@ -21,7 +21,7 @@ metadata:
   labels:
     {{- include "midasbackend.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ .Values.services.api.type }}
   ports:
     - port: {{ .Values.services.api.port }}
       targetPort: api

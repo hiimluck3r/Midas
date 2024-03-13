@@ -1,5 +1,5 @@
 apiVersion: v2
-name: midas-backend
+name: midasbackend
 description: Midas backend helmchart for Avito's case from ITPurpleHack
 
 # A chart can be either an 'application' or a 'library' chart.
