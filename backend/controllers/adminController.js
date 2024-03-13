@@ -17,8 +17,9 @@ const getAllMatrix = async (req, res)=>{
   return res.status(200).json(names);
 }
 const getMatrix = async (req, res)=>{
+  let uuid;
   try{
-    const uuid = new UUID(req.params.id);
+    uuid = new UUID(req.params.id);
   } catch(err){
     return res.send(404);
   }
