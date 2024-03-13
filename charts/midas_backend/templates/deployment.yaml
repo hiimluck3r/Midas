@@ -49,17 +49,10 @@ spec:
           
           livenessProbe:
             httpGet:
-              path: /admin/api/json/segments
+              path: /admin/api
               port: api
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
-
-          readinessProbe:
-            httpGet:
-              path: /admin/api
-              port: api
-            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
                                  
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
