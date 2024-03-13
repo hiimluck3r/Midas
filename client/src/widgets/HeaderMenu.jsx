@@ -3,7 +3,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import MidasLogo from '../images/midas_logo.png'; // Импортируем изображение
+import MidasLogo from '../../public/midas_logo_contour.png'; // Импортируем изображение
 
 export default function HeaderMenu() {
     return (
