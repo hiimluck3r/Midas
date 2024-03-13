@@ -118,6 +118,6 @@ mongodb-sharded:
   
   mongos:
     replicaCount: 1
-    useStatefulSet: true
+    useStatefulSet: false
     servicePerReplica:
       enabled: false
