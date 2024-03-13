@@ -16,7 +16,7 @@ spec:
   - matches:
     - path:
         type: PathPrefix
-        value: /api
+        value: /api/admin
     backendRefs:
     - name: {{ include "midasbackend.fullname" . }}-api
       kind: Service
@@ -24,7 +24,13 @@ spec:
   - matches:
     - path:
         type: PathPrefix
-        value: /
+        value: /location
+    - path:
+        type: PathPrefix
+        value: /users
+    - path:
+        type: PathPrefix
+        value: /categories
     backendRefs:
     - name: {{ include "midasbackend.fullname" . }}-db
       kind: Service
