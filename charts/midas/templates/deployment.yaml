@@ -37,7 +37,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-          - name: BACKEND_URL
+          - name: VITE_BACKEND_URL
             value: "{{ .Values.backend }}"
           ports:
             - name: http
