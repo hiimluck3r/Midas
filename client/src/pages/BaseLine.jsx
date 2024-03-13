@@ -20,8 +20,7 @@ function BaseLine() {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`${backendUrl}/api/admin`);
-                console.log(backendUrl);
-                const filteredData = response.data.filter(item => item.name.startsWith('baselineMatrix_') || item.name.startsWith('discountMatrix'));
+                const filteredData = response.data.filter(item => item.name.startsWith('baselineMatrix_'));
                 setNames(filteredData.slice(0, 10));
             } catch (error) {
                 console.error('Произошла ошибка при запросе к API:', error);
@@ -78,7 +77,6 @@ function BaseLine() {
 
     const handleSaveEdit = async () => {
         try {
-            // Создаем объект данных для отправки на сервер
             const requestData = {
                 dbID: "ec8805ca-0baf-4455-9e3a-e40d00e21f61",
                 arr_obj: [
@@ -89,17 +87,17 @@ function BaseLine() {
                 ]
             };
 
-            // Отправляем POST-запрос на сервер с данными для сохранения
             const response = await axios.post(`${backendUrl}/api/admin/`, requestData);
             console.log('Данные успешно сохранены:', response.data);
 
-            // Закрываем диалог и сбрасываем данные для редактирования
             setOpenEditDialog(false);
             setEditData(null);
         } catch (error) {
             console.error('Произошла ошибка при сохранении данных:', error);
         }
     };
+
+
     const handlePriceChange = (value) => {
         setEditData(prevState => ({
             ...prevState,
