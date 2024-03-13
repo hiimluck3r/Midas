@@ -109,8 +109,8 @@ mongodb:
       command: ["/bin/sh", "-c"]
       args: ["curl -o dump.tar.gz https://github.com/hiimluck3r/Midas/raw/backend/dump.tar.gz && tar -xzvf -C /bitnami/"]
       volumeMounts:
-        - name: dumps
-          mountPath: /bitnami/dump
+        - name: bitnami
+          mountPath: /bitnami/
 
   initdbScripts: 
     initdb.sh:
