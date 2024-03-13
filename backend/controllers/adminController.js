@@ -82,16 +82,22 @@ const createStorage = async (req, res)=>{
     discount
   };
   o_id = new ObjectId('65f0a0cf757eb26f583067b4')
-  const doc = await stor.updateOne({temp_id: 0}, {$set: storage})
-  console.log(doc);
-  //await stor.insertOne(storage);
+  const isCreated = await stor.findOne({});
+  //console.log(isCreated);
+  if(isCreated){
+    await stor.updateOne({}, {$set: storage});
+    return res.status(200).json(storage);
+  }
+  
+  
+  await stor.insertOne(storage);
   return res.status(200).json(storage);
 }
 //Get storage
 const getStorage = async (req,res)=>{
   const db = await dbPromise;
   const stor = await db.collection('storage');
-  const doc = await stor.findOne({temp_id: 0});
+  const doc = await stor.findOne();
   return res.status(200).json(doc);
 }
 module.exports = {

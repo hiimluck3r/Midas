@@ -10,6 +10,7 @@ const cors = require('cors');
 const dbPromise = require('./mongoConnection.js');
 const adminRoutes = require('./routes/admin.js');
 const userRoutes = require('./routes/user.js');
+const jsonRoutes = require('./routes/json.js')
 
 const app = express();
 
@@ -28,3 +29,4 @@ app.use(morgan('dev')); //log req
 //Routes
 app.use('/api/admin', adminRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/json', jsonRoutes)
