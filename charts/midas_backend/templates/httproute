@@ -2,7 +2,7 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: {{ include "midas_backend.fullname" . }}
+  name: {{ include "midasbackend.fullname" . }}
   {{- with .Values.httproute.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -18,7 +18,7 @@ spec:
         type: PathPrefix
         value: /api
     backendRefs:
-    - name: {{ include "midas_backend.fullname" . }}-api
+    - name: {{ include "midasbackend.fullname" . }}-api
       kind: Service
       port: {{ .Values.services.api.port }}
   - matches:
@@ -26,7 +26,7 @@ spec:
         type: PathPrefix
         value: /
     backendRefs:
-    - name: {{ include "midas_backend.fullname" . }}-db
+    - name: {{ include "midasbackend.fullname" . }}-db
       kind: Service
       port: {{ .Values.services.db.port }}
 {{- end }}
