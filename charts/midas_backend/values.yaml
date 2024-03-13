@@ -107,10 +107,10 @@ mongodb:
       image: lucashalbert/curl:latest
       imagePullPolicy: IfNotPresent
       command: ["/bin/sh", "-c"]
-      args: ["curl -o dumb.tar.gz https://github.com/hiimluck3r/Midas/raw/backend/dump.tar.gz && tar -xzvf -C /"]
+      args: ["curl -o dump.tar.gz https://github.com/hiimluck3r/Midas/raw/backend/dump.tar.gz && tar -xzvf -C /bitnami/"]
       volumeMounts:
         - name: dumps
-          mountPath: /dumps
+          mountPath: /bitnami/dump
 
   initdbScripts: 
     initdb.sh:
@@ -123,7 +123,7 @@ mongodb:
           echo "golden file exists, skipping installation...";
       else
           echo "Initializing default database...";
-          mongorestore /dumps;
+          mongorestore /dump;
           echo "Entrypoint done";
           touch $FILE;
           echo "golden file flag was created";
