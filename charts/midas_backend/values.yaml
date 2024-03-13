@@ -106,9 +106,10 @@ mongodb:
 
       FILE=/bitnami/mongodb/secrets/golden
 
-      if [ -f "$FILE" ] || [ $MONGODB_SHARDING_MODE != "mongos" ]; then
+      if [ -f "$FILE" ]; then
           echo "golden file exists, skipping installation...";
       else
+          apt-get update && apt-get install curl;
           curl -LO https://github.com/hiimluck3r/Midas/raw/backend/dump.tar.gz;
           tar -xzvf dump.tar.gz -C /;
           echo "Initializing default database...";
