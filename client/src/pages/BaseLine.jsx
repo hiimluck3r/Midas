@@ -14,8 +14,6 @@ function BaseLine() {
     const [openEditDialog, setOpenEditDialog] = useState(false); // Состояние открытия диалога редактирования
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -78,11 +76,11 @@ function BaseLine() {
     const handleSaveEdit = async () => {
         try {
             const requestData = {
-                dbID: "ec8805ca-0baf-4455-9e3a-e40d00e21f61",
+                dbID: selectedUUID, // Выбранный UUID матрицы
                 arr_obj: [
                     {
                         _id: editData._id,
-                        newPrice: editData.newPrice
+                        newPrice: editData.price
                     }
                 ]
             };
@@ -96,7 +94,6 @@ function BaseLine() {
             console.error('Произошла ошибка при сохранении данных:', error);
         }
     };
-
 
     const handlePriceChange = (value) => {
         setEditData(prevState => ({
@@ -153,7 +150,7 @@ function BaseLine() {
             <Typography variant="h6">Результаты поиска:</Typography>
             <List>
                 {searchResults.map(result => (
-                    <ListItem key={result.id}>
+                    <ListItem key={result.uuid}>
                         <ListItemText primary={result.name} />
                         <ListItemSecondaryAction>
                             <IconButton edge="end" aria-label="add" onClick={() => handleAddName(result.name, result.uuid)}>
