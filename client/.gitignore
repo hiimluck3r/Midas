@@ -13,6 +13,7 @@ dist-ssr
 *.local
 Midas
 src/Midas
+.env
 
 # Editor directories and files
 .vscode/*

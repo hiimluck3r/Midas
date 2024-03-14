@@ -16,10 +16,10 @@ jobs:
       working-directory: ./client
     - name: Test the Docker image
       run: |
-        docker run -d -p 8080:8080 midas:test
+        docker run -d -p 5173:5173 midas:test
         sleep 3
-    - name: Get HTTP response from "localhost:8080"
-      run: "curl -f localhost:8080"
+    - name: Get HTTP response from "localhost:5173"
+      run: "curl -f localhost:5173"
   
   ctr_push:
     needs: ["ctr_build"]
